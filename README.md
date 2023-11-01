@@ -48,7 +48,8 @@ VMware Workstation comes with a command line tool called ```vmwrun.exe```. We ca
 ```
 @echo off
 "C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe" -T player start "C:\Ubuntu 22.04\Ubuntu 22.04.vmx" nogui
+timeout /t 7 /nobreak
 ssh ubuntu@192.168.42.X
 "C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe" -T player suspend "C:\Ubuntu 22.04\Ubuntu 22.04.vmx" nogui
 ```
-We can also change ```suspend``` to ```stop``` to shut down the VM after we exit it.
+We can also change ```suspend``` to ```stop``` to shut down the VM after we exit it. The timout gives the VM time to be fully booted when we try to connect to it via SSH.
