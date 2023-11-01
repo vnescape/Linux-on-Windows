@@ -42,3 +42,13 @@ Shut down your VM, go to the ```Settings->Options``` and change ```Folder sharin
 Boot your VM and create an empty folder where you want to mount your share. Edit ```/etc/fstab``` to mount the shared folder. Add the following line and adjust the paths:
 ```.host:/ubuntuDemo /home/ubuntudemo/share fuse.vmhgfs-fuse allow_other,defaults 0 0 ```. After changing fstab run ```sudo mount -a``` to try attempt to mount the filesystem.
 You should now be able to copy files into this folder and the files should appear on both your Windows PC and your Linux VM.
+
+## Putting it all together in a one-click solution
+VMware Workstation comes with a command line tool called ```vmwrun.exe```. We can use this and some basic batch scripting to create a one-click solution to start our VM, connect to it via SSH and suspend it on exit.
+```
+@echo off
+"C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe" -T player start "C:\Ubuntu 22.04\Ubuntu 22.04.vmx" nogui
+ssh ubuntu@192.168.42.X
+"C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe" -T player suspend "C:\Ubuntu 22.04\Ubuntu 22.04.vmx" nogui
+```
+We can also change ```suspend``` to ```stop``` to shut down the VM after we exit it.
