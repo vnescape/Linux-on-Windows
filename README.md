@@ -17,3 +17,20 @@ Once you have clicked on "File->New Virtual Machine..." (Make sure you have upda
 Right-click on your newly created VM and press "Settings..." and add a second Network Adapter. Check Host-only as Network connection.
 <img src="images/Network.png">
 We need this adapter to have a static IP address for our SSH connection.
+
+### Installing the SSH server on the Virtual Machine
+We can install install the SSH sever with the following command:
+```sudo apt install ssh ``` and check its status with ```systemctl status sshd.service```.
+<img src="images/ssh_running.png">
+If it does not show ```active (running)```, type in the following command ```sudo systemctl enable sshd && sudo systemctl start sshd```.
+
+### Configuring the SSH server
+To configure the SSH server we need to edit the ```/etc/ssh/sshd_config``` file. There should be several lines starting with #, remove the # from the following lines and set PasswordAuthentication to no:
+```
+PermitRootLogin prohibit-password
+PubkeyAuthentication yes
+PasswordAuthentication no
+```
+Now we need to generate or copy our SSH public key. If you don't have one, generate one by typing ```ssh-keygen```. Now copy ```<youruser Directory>/.ssh/id_rsa.pub ``` to ```~/.ssh/authorized_keys``` on the Virtual Machine. Restart the SSH server to apply these changes ```sudo systemctl reload ssh```.
+### Find out your VM's IP address
+Install ifconfig by typing ```sudo apt install net-tools``` and run ```ifconfig```. In most cases, your VM's IP address for your host-only network adapter should start with ```192.168.42.X```. If you find this inet address make a note of it and try to connect to the VM on your Windows PC by typing  ```ssh <username of VM>@<192.168.42.X>```, accept the fingerprint and you should be connect to your VM via SSH.
