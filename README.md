@@ -32,5 +32,13 @@ PubkeyAuthentication yes
 PasswordAuthentication no
 ```
 Now we need to generate or copy our SSH public key. If you don't have one, generate one by typing ```ssh-keygen```. Now copy ```<youruser Directory>/.ssh/id_rsa.pub ``` to ```~/.ssh/authorized_keys``` on the Virtual Machine. Restart the SSH server to apply these changes ```sudo systemctl reload ssh```.
+
 ### Find out your VM's IP address
 Install ifconfig by typing ```sudo apt install net-tools``` and run ```ifconfig```. In most cases, your VM's IP address for your host-only network adapter should start with ```192.168.42.X```. If you find this inet address make a note of it and try to connect to the VM on your Windows PC by typing  ```ssh <username of VM>@<192.168.42.X>```, accept the fingerprint and you should be connect to your VM via SSH.
+
+## Setting up shared folders
+Shut down your VM, go to the ```Settings->Options``` and change ```Folder sharing``` to ```Always enabled```. Add a new Shared Folder and note down the Name of the folder.
+<img src="images/shared_folder.png">
+Boot your VM and create an empty folder where you want to mount your share. Edit ```/etc/fstab``` to mount the shared folder. Add the following line and adjust the paths:
+```.host:/ubuntuDemo /home/ubuntudemo/share fuse.vmhgfs-fuse allow_other,defaults 0 0 ```. After changing fstab run ```sudo mount -a``` to try attempt to mount the filesystem.
+You should now be able to copy files into this folder and the files should appear on both your Windows PC and your Linux VM.
