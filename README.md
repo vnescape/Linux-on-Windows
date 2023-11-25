@@ -15,13 +15,17 @@ Once you have clicked on "File->New Virtual Machine..." (Make sure you have upda
 
 ## Connect to the Virtual Machine via SSH
 Right-click on your newly created VM and press "Settings..." and add a second Network Adapter. Check Host-only as Network connection.
+
 <img src="images/Network.png">
+
 We need this adapter to have a static IP address for our SSH connection.
 
 ### Installing the SSH server on the Virtual Machine
 We can install install the SSH sever with the following command:
 ```sudo apt install ssh ``` and check its status with ```systemctl status sshd.service```.
+
 <img src="images/ssh_running.png">
+
 If it does not show ```active (running)```, type in the following command ```sudo systemctl enable sshd && sudo systemctl start sshd```.
 
 ### Configuring the SSH server
@@ -38,7 +42,9 @@ Install ifconfig by typing ```sudo apt install net-tools``` and run ```ifconfig`
 
 ## Setting up shared folders
 Shut down your VM, go to the ```Settings->Options``` and change ```Folder sharing``` to ```Always enabled```. Add a new Shared Folder and note down the Name of the folder.
+
 <img src="images/shared_folder.png">
+
 Boot your VM and create an empty folder where you want to mount your share. Edit ```/etc/fstab``` to mount the shared folder. Add the following line and adjust the paths:
 ```.host:/ubuntuDemo /home/ubuntudemo/share fuse.vmhgfs-fuse allow_other,defaults 0 0 ```. After changing fstab run ```sudo mount -a``` to try attempt to mount the filesystem.
 You should now be able to copy files into this folder and the files should appear on both your Windows PC and your Linux VM.
